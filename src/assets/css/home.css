@@ -68,6 +68,11 @@
   width: 100%;
 }
 
+/* Two classes so this beats `.classic-html * { box-sizing: inherit }` in app.scss */
+.timeline-container-wrapper .timeline-track-wrapper {
+  box-sizing: content-box;
+}
+
 .timeline-actions {
   display: flex;
   align-items: center;
@@ -94,7 +99,7 @@
   height: 45px;
   background-color: red;
   position: absolute;
-  z-index: 1;
+  z-index: 4; /* above the clip bars (zIndex 3) */
   top: -12px;
 }
 
