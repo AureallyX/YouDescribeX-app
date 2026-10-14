@@ -1,0 +1,125 @@
+/* xiao1009 Styles for the RefineAD panel. Lives under assets/css like editAudioDesc.css, which is
+   what every other component in the editor imports. Buttons deliberately reuse the global
+   .ydx-button classes from index.css, so the panel inherits the editor's 42px button height and the
+   violet TTS colour (index.css:131-146) instead of defining its own. */
+
+.refine-assistant {
+  margin-top: var(--space-sm, 8px);
+  padding: 12px;
+  border: 1px solid var(--border-color, #d7d2e3);
+  border-radius: 8px;
+  background-color: var(--surface-subtle, #faf8fd);
+}
+
+/* xiao1009 Visually hidden but still read aloud. Defined here rather than relying on Bootstrap's
+   .visually-hidden, which this app does not load. */
+.refine-assistant__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* xiao1009 The alert region stays mounted and simply has no text most of the time, so it must not
+   take up space or draw a border while it is empty. */
+.refine-assistant__error:not(:empty) {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-left: 4px solid #dc3545;
+  border-radius: 4px;
+  background-color: #fdecee;
+  color: #842029;
+  font-size: 0.9rem;
+}
+
+.refine-assistant__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 6px);
+  align-items: center;
+}
+
+.refine-assistant__free-text {
+  margin-top: 10px;
+}
+
+.refine-assistant__label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.refine-assistant__free-text-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 6px);
+  align-items: center;
+}
+
+.refine-assistant__input {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color, #d7d2e3);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.refine-assistant__working {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.refine-assistant__result {
+  margin-top: 4px;
+}
+
+.refine-assistant__block + .refine-assistant__block {
+  margin-top: 10px;
+}
+
+.refine-assistant__block-title {
+  margin: 0 0 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.refine-assistant__text {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid var(--border-color, #d7d2e3);
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+}
+
+.refine-assistant__result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 6px);
+  align-items: center;
+  margin-top: 12px;
+}
+
+/* xiao1009 Keyboard focus must stay obvious inside the panel; the editor's own focus ring is only
+   defined for .ydx-button, not for the text input. */
+.refine-assistant__input:focus-visible {
+  outline: 2px solid #6f45ad;
+  outline-offset: 1px;
+}
+
+@media (prefers-contrast: more) {
+  .refine-assistant {
+    border-width: 2px;
+  }
+}

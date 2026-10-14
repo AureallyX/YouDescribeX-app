@@ -16,6 +16,8 @@ import {
   howlerVolumeFor,
   setDescriptionAmplification,
 } from '@/shared/utils/descriptionGain'
+// xiao1009 RefineAD
+import RefineAssistantPanel from '../RefineAssistant/RefineAssistantPanel'
 
 interface Props {
   userId: string
@@ -108,6 +110,9 @@ const EditClip = ({
     useState(false)
   const [showSwitchToTTSModal, setShowSwitchToTTSModal] = useState(false)
   const [switchToTTSText, setSwitchToTTSText] = useState('')
+  // xiao1009 RefineAD: panel visibility and the trigger it hands focus back to
+  const [showRefineAssistant, setShowRefineAssistant] = useState(false)
+  const aiAssistantButtonRef = useRef<HTMLButtonElement>(null)
 
   const { status, startRecording, stopRecording, mediaBlobUrl } =
     useReactMediaRecorder({ audio: true })
@@ -529,6 +534,8 @@ const EditClip = ({
     setShowTextAreaForRecording(!showTextAreaForRecording)
   }
   const shouldShowTextArea = !isRecorded
+  // xiao1009 RefineAD is text-only: off for recorded clips, in preview and in the tutorial
+  const canRefine = !isRecorded && !isPreview && !isTutorialMode
 
   const handleStartIntegratedRecording = () => {
     if (isTutorialMode) return
@@ -819,6 +826,18 @@ const EditClip = ({
           )}
 
           <div className="primary-actions">
+            {/* xiao1009 RefineAD trigger */}
+            <button
+              type="button"
+              ref={aiAssistantButtonRef}
+              className="ydx-button ydx-button--tts-violet"
+              onClick={() => setShowRefineAssistant(!showRefineAssistant)}
+              disabled={!canRefine}
+              aria-expanded={showRefineAssistant}
+              title="Ask the AI to rewrite this description"
+            >
+              <i className="fa fa-magic" /> AI Assistant
+            </button>
             {!isRecorded && !isPreview && !isIntegratedRecordingMode && (
               <button
                 className="ydx-button ydx-button--primary record-voice-prominent"
@@ -932,6 +951,23 @@ const EditClip = ({
               <i className="fa fa-trash" /> Delete Clip
             </button>
           </div>
+          {/* xiao1009 RefineAD panel; accept fills the edit box through both setters */}
+          {showRefineAssistant && canRefine && (
+            <RefineAssistantPanel
+              audioDescriptionId={audioDescriptionId}
+              clipId={clipId}
+              currentText={clipDescriptionText}
+              onAccept={(text) => {
+                setClipDescriptionText(text)
+                setClipDescText(text)
+              }}
+              onClose={() => {
+                setShowRefineAssistant(false)
+                aiAssistantButtonRef.current?.focus()
+              }}
+              onFocusTrigger={() => aiAssistantButtonRef.current?.focus()}
+            />
+          )}
         </div>
 
         <div
