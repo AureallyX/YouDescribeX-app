@@ -50,6 +50,14 @@
   .description-buttons {
     margin-top: 8px;
 
+    // Xiao-1017: YouDescribe yellow — same value as the SFSU name in the footer
+    // (footer.scss). !important is required: .w3-btn sets its own
+    // background-color, and w3-yellow previously won by carrying one too.
+    .youdescribe-yellow {
+      background-color: #f4c430 !important;
+      color: #000 !important;
+    }
+
     button {
       margin-bottom: 8px;
       width: 100%;
