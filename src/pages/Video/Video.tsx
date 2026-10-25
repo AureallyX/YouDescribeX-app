@@ -1439,7 +1439,7 @@ const Video = ({ isTutorialMode = false }: VideoProps) => {
               title={translate('Add a new description for this video')}
               ariaLabel="Add a new description for this video"
               text={translate('Add Freestyle Description')}
-              color="w3-yellow w3-block w3-margin-top"
+              color="youdescribe-yellow w3-block w3-margin-top"
               onClick={handleAddDescription}
             />
           </div>
@@ -1459,7 +1459,7 @@ const Video = ({ isTutorialMode = false }: VideoProps) => {
               title={translate('Add a new description for this video')}
               ariaLabel="Add a new description for this video"
               text={translate('Add Freestyle Description')}
-              color="w3-yellow w3-block w3-margin-top"
+              color="youdescribe-yellow w3-block w3-margin-top"
               onClick={handleAddDescription}
             />
           </div>
@@ -1516,7 +1516,7 @@ const Video = ({ isTutorialMode = false }: VideoProps) => {
               title={translate('Add a new description for this video')}
               ariaLabel="Add a new description for this video"
               text={translate('Add Freestyle Description')}
-              color="w3-yellow w3-block w3-margin-top"
+              color="youdescribe-yellow w3-block w3-margin-top"
               onClick={handleAddDescription}
               disabled={requestAiDescription.requested}
             />
