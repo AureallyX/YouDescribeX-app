@@ -11,6 +11,7 @@
 // Structure follows the inline panel at EditClip.tsx:854-886; the live regions follow
 // RatingPopup.tsx:454-460.
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Tooltip } from 'bootstrap'
 import '@/assets/css/refineAssistant.css'
 import {
   MAX_INSTRUCTION_CHARS,
@@ -51,6 +52,7 @@ const RefineAssistantPanel = ({
 
   const acceptButtonRef = useRef<HTMLButtonElement>(null)
   const firstPresetRef = useRef<HTMLButtonElement>(null)
+  const presetsRef = useRef<HTMLDivElement>(null)
   // xiao1009 A clip can only be open once at a time, so its id makes the label ids unique without
   // needing React 18's useId.
   const instructionInputId = `refine-instruction-${clipId}`
@@ -67,6 +69,26 @@ const RefineAssistantPanel = ({
   useEffect(() => {
     if (suggestion) acceptButtonRef.current?.focus()
   }, [suggestion])
+
+  // The preset buttons are drawn again each time the suggestion goes away, and EditClip only
+  // sets up tooltips once when it loads, so the panel starts its own here and removes them again
+  // when the buttons leave the screen. Bootstrap shows them on hover and on keyboard focus.
+  const showingPresets = !suggestion
+  useEffect(() => {
+    if (!showingPresets || !presetsRef.current) return
+    const tooltips = Array.from(
+      presetsRef.current.querySelectorAll('[data-bs-toggle="tooltip"]'),
+    ).map(
+      (element) =>
+        new Tooltip(element, {
+          // Below the button, with a small gap, so it never covers the button above it.
+          placement: 'bottom',
+          offset: [0, 6],
+          customClass: 'refine-assistant__tooltip',
+        }),
+    )
+    return () => tooltips.forEach((tooltip) => tooltip.dispose())
+  }, [showingPresets])
 
   const submit = useCallback(
     async (request: PendingRequest) => {
@@ -166,19 +188,33 @@ const RefineAssistantPanel = ({
 
       {!suggestion && (
         <>
-          <div className="refine-assistant__presets">
-            {REFINE_PRESETS.map((preset, index) => (
-              <button
-                key={preset.id}
-                type="button"
-                ref={index === 0 ? firstPresetRef : undefined}
-                className="ydx-button ydx-button--tts-violet refine-assistant__preset"
-                onClick={() => submit({ presetId: preset.id })}
-                disabled={isWorking}
-              >
-                {preset.label}
-              </button>
-            ))}
+          <div className="refine-assistant__presets" ref={presetsRef}>
+            {REFINE_PRESETS.map((preset, index) => {
+              const descriptionId = `refine-preset-description-${clipId}-${preset.id}`
+              return (
+                <React.Fragment key={preset.id}>
+                  <button
+                    type="button"
+                    ref={index === 0 ? firstPresetRef : undefined}
+                    className="ydx-button ydx-button--tts-violet refine-assistant__preset"
+                    onClick={() => submit({ presetId: preset.id })}
+                    disabled={isWorking}
+                    data-bs-toggle="tooltip"
+                    title={preset.description}
+                    aria-describedby={descriptionId}
+                  >
+                    {preset.label}
+                  </button>
+                  {/* Hidden copy of the tooltip text, so a screen reader reads it with the button. */}
+                  <span
+                    id={descriptionId}
+                    className="refine-assistant__sr-only"
+                  >
+                    {preset.description}
+                  </span>
+                </React.Fragment>
+              )
+            })}
           </div>
 
           <div className="refine-assistant__free-text">

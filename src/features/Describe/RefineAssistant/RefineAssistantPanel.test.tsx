@@ -76,6 +76,21 @@ describe('RefineAssistantPanel — preset buttons', () => {
     })
   })
 
+  it('gives every preset button a short description a screen reader can read', () => {
+    renderPanel()
+
+    REFINE_PRESETS.forEach((preset) => {
+      const button = screen.getByRole('button', { name: preset.label })
+      const descriptionId = button.getAttribute('aria-describedby')
+      expect(descriptionId).toBeTruthy()
+      expect(
+        document.getElementById(descriptionId as string)?.textContent,
+      ).toBe(preset.description)
+      // the tooltip text is one short line with no full stop
+      expect(preset.description.endsWith('.')).toBe(false)
+    })
+  })
+
   it('posts the clip and the preset id to the refine endpoint', async () => {
     mockedAxios.post.mockResolvedValue(suggestionResponse())
     renderPanel()

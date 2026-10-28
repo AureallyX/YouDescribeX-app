@@ -118,6 +118,14 @@
   outline-offset: 1px;
 }
 
+/* Tooltips on the preset buttons. Bootstrap draws them at the end of the page, outside the panel,
+   so they are styled through the customClass set in RefineAssistantPanel.tsx. Small text, one line. */
+.refine-assistant__tooltip .tooltip-inner {
+  max-width: none;
+  white-space: nowrap;
+  font-size: 0.75rem;
+}
+
 @media (prefers-contrast: more) {
   .refine-assistant {
     border-width: 2px;

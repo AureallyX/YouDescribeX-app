@@ -9,13 +9,30 @@ import { RefinePresetId } from '@/shared/types/refine'
 export interface RefinePresetButton {
   id: RefinePresetId
   label: string
+  description: string
 }
 
 // xiao1009 The panel renders this array in a loop, so adding a preset is one entry here plus one
 // entry in the backend file. Order is the order the buttons appear in.
 export const REFINE_PRESETS: RefinePresetButton[] = [
-  { id: 'shorten-to-fit', label: 'Shorten to fit' },
-  { id: 'simplify', label: 'Simplify' },
-  { id: 'fix-grammar', label: 'Fix grammar' },
-  { id: 'keep-onscreen-text-verbatim', label: 'Keep on-screen text' },
+  {
+    id: 'shorten-to-fit',
+    label: 'Shorten to fit',
+    description: 'Trims it down to fit the time',
+  },
+  {
+    id: 'simplify',
+    label: 'Simplify',
+    description: 'Rewrites it in plain everyday talk',
+  },
+  {
+    id: 'fix-grammar',
+    label: 'Fix grammar',
+    description: 'Fixes spelling and grammar slips',
+  },
+  {
+    id: 'keep-onscreen-text-verbatim',
+    label: 'Keep on-screen text',
+    description: 'Keeps on-screen words exactly as shown',
+  },
 ]
